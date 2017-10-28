@@ -1,18 +1,23 @@
 <template lang="html">
-  <div class="v-autocomplete">
-    <div class="v-autocomplete-input-group" :class="{'v-autocomplete-selected': value}">
-      <input type="search" v-model="searchText" :placeholder="placeholder" :class="inputClass"
-            :disabled="disabled" @blur="blur" @focus="focus" @input="inputChange"
-            @keyup.enter="keyEnter" @keydown.tab="keyEnter" 
-            @keydown.up="keyUp" @keydown.down="keyDown">
+    <div class="v-autocomplete">
+        <div class="v-autocomplete-input-group" :class="{'v-autocomplete-selected': value}">
+            <input type="search" v-model="searchText" :placeholder="placeholder" :class="inputClass"
+                :disabled="disabled" @blur="blur" @focus="focus" @input="inputChange"
+                @keyup.enter="keyEnter" @keydown.tab="keyEnter" 
+                @keydown.up="keyUp" @keydown.down="keyDown">
+        </div>
+        <div class="v-autocomplete-list" v-if="showList && internalItems.length && resetGroup()">
+            <template v-for="item, i in internalItems">
+                <span v-if="newGroup(item) && item.group !== null">
+                    {{ item.group }}
+                </span>
+                <div class="v-autocomplete-list-item" @click="onClickItem(item)"
+                    :class="{'v-autocomplete-item-active': i === cursor}" @mouseover="cursor = i">
+                    <div :is="componentItem" :item="item"></div>
+                </div>
+            </template>
+        </div>
     </div>
-    <div class="v-autocomplete-list" v-if="showList && internalItems.length">
-      <div class="v-autocomplete-list-item" v-for="item, i in internalItems" @click="onClickItem(item)"
-           :class="{'v-autocomplete-item-active': i === cursor}" @mouseover="cursor = i">
-        <div :is="componentItem" :item="item"></div>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -21,6 +26,7 @@ import utils from './utils.js'
 
 export default {
   name: 'v-autocomplete',
+  currentGroup: null,  
   props: {
     componentItem: { default: () => Item },
     placeholder: String,
@@ -54,6 +60,19 @@ export default {
       this.onSelectItem(null, 'inputChange')
       utils.callUpdateItems(this.searchText, this.updateItems)
       this.$emit('change', this.searchText)
+    },
+    
+    resetGroup () {
+        this.currentGroup = null;
+        return true;
+    },
+    
+    newGroup (item) {
+        if (item.group !== this.currentGroup) {
+            this.currentGroup = item.group;
+            return true;
+        }
+        return false;
     },
 
     updateItems () {
