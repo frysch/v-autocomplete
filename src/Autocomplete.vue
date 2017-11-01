@@ -38,6 +38,7 @@ export default {
       default: item => item
     },
     items: Array,
+    startText: { type: String, default: '' },
     autoSelectOneItem: { type: Boolean, default: true },
     inputClass: {type: String, default: 'v-autocomplete-input'},
     disabled: {
@@ -137,12 +138,12 @@ export default {
         this.onSelectItem(this.internalItems[this.cursor])
         this.showList = false
       }
-    },
-
+    }
   },
   created () {
     utils.minLen = this.minLen
     utils.wait = this.wait
+    this.searchText = this.startText;
     this.onSelectItem(this.value)
   },
   watch: {
