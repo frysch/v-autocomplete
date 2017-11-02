@@ -86,7 +86,7 @@ export default {
 
     blur () {
       this.$emit('blur', this.searchText)
-      setTimeout( () => this.showList = false, 200)
+      setTimeout( () => this.showList = true, 200)
     },
 
     onClickItem(item) {
