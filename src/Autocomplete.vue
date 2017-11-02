@@ -12,7 +12,7 @@
                     {{ item.group }}
                 </span>
                 <div class="v-autocomplete-list-item" @click="onClickItem(item)"
-                    :class="{'v-autocomplete-item-active': i === cursor}" @mouseover="cursor = i">
+                    :class="{'v-autocomplete-list-item--active': i === cursor}" @mouseover="cursor = i">
                     <div :is="componentItem" :item="item"></div>
                 </div>
             </template>
@@ -86,7 +86,7 @@ export default {
 
     blur () {
       this.$emit('blur', this.searchText)
-      setTimeout( () => this.showList = false, 200)
+      setTimeout( () => this.showList = true, 200)
     },
 
     onClickItem(item) {
