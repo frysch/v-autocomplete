@@ -1,7 +1,7 @@
 <template lang="html">
     <div class="v-autocomplete">
         <div class="v-autocomplete-input-group" :class="{'v-autocomplete-selected': value}">
-            <input type="search" v-model="searchText" :placeholder="placeholder" :class="inputClass"
+            <input type="search" v-model="searchText" :name="inputName" :placeholder="placeholder" :class="inputClass"
                 :disabled="disabled" @blur="blur" @focus="focus" @input="inputChange"
                 @keyup.enter="keyEnter" @keydown.tab="keyEnter" 
                 @keydown.up="keyUp" @keydown.down="keyDown">
@@ -37,6 +37,7 @@ export default {
       type: Function,
       default: item => item
     },
+    inputName: { type: String, default: 'search-text' },
     items: Array,
     startText: { type: String, default: '' },
     autoSelectOneItem: { type: Boolean, default: true },
